@@ -26,3 +26,16 @@ into the tuple.
 This was another fun exercise.  I enjoyed the challenge.  I don't want to get ahead into classes and objects
 even though I see other students are already working on that format.  I figure that will come soon enough.
 
+UPDATE:  
+I read and then reread this week's reading and decided I needed to incorporate a SENTINEL to the software.
+This added minor complexity.  Because I am processing ticket sales as a loop, I can't use a BREAK; it only
+exit's the current loop.  I wanted to print a Thank You message and then exit the program entirely.
+
+I could have done the initial input, included an IF statement to check for SENTINEL, and then continue, but I 
+would have also needed to repeat the lines inside the loop.  What I chose to do instead was prime an error 
+message with a null value, prime the input variable with a wrong value, and then enter the loop.  Basically,
+the loop ALWAYS fails the first iteration.  The loop will then print the error message (a null string on the first
+loop), input a value, check the value for SENTINEL and end program if true, else return to the top of the loop.
+
+Again, I tested my code in iPython to ensure my logic was correct before implementing the change in my
+assignment.
