@@ -24,6 +24,8 @@ SECTION_C = 'C'
 SEATS_AVAILABLE_C = 200
 TICKET_COST_C = 10.00
 
+SENTINEL = '-99'
+
 section_tuple = (SECTION_A, SECTION_B, SECTION_C)
 seating_tuple = (SEATS_AVAILABLE_A, SEATS_AVAILABLE_B, SEATS_AVAILABLE_C)
 tickets_tuple = (TICKET_COST_A, TICKET_COST_B, TICKET_COST_C)
@@ -42,8 +44,8 @@ tickets_tuple = (TICKET_COST_A, TICKET_COST_B, TICKET_COST_C)
 # MAIN FUNCTION
 def main():
     """This program displays theater information, receives the number of
-       ticket sales for each theater section, calculates ticket sales for
-       each section, and then prints out a total of ticket sales."""
+    ticket sales for each theater section, calculates ticket sales for
+    each section, and then prints out a total of ticket sales."""
 
     # Display the greeting banner
     banner()
@@ -79,15 +81,16 @@ def main():
     
     return 
 
+
 # Display banner and welcome message
 def banner():
     """This module displays the welcome message and all the constant values.
-       it neither receives or returns values."""
+    it neither receives or returns values."""
 
     print('*' * 71)
     print(" " * 24 + 'WELCOME TO STAGEMASTER')
     print('*' * 71)
-    print('  STAGEMASTER IS YOUR ALL-SOURCE SYSTEM FOR DETERMINING TICKET SALES.')
+    print('  STAGEMASTER IS YOUR ALL-SOURCE SYSTEM FOR DETERMINING TICKET SALES.\n')
     
     for section in range(len(section_tuple)):
         print(f'Section {section_tuple[section]} has a total of {seating_tuple[section]} seats at ${tickets_tuple[section]:.2f} per ticket.')
@@ -96,8 +99,8 @@ def banner():
 # Calculate ticket revenue
 def calculate_ticket_sales(ticket_price, seats_sold):
     """This function receives the ticket price and total seats sold per section
-       and does the actual math to determinine actual ticket sales.  It will
-       then return the ticket sales for the single section.""" 
+    and does the actual math to determinine actual ticket sales.  It will
+    then return the ticket sales for the single section.""" 
     # While it is a small module, keeping the calculations separate allows 
     # for future expandability, such as incorporating tax, costs, or other 
     # financial calculations as needed.
@@ -112,19 +115,31 @@ def input_tickets_sold(section_name, seats_available, ticket_price):
     available for that section, and the price per tickets for that section.
     It then prompts the user for the number of tickets sold.  If the entry 
     is not a number, or if the value falls out of the expected range of 
-    number of seats abailable it will display an error message and re-prompt
-    the user for another entry.  When a correct value is entered, it will 
-    dispay the total sales for that section and return the seats sold and
-    the total ticket sales value."""
+    Number of seats abailable it will display an error message and re-prompt
+    the user for another entry.  If the entry is the SENTINEL it will print
+    a thank-you message and exit program.
+    When a correct value is entered it will dispay the total sales for that 
+    section.  It then passes seats sold and the ticket cost to calculate the
+    actual ticket sales amount, and returns the seats sold and the total 
+    ticket sales value."""
     # I input seats_sold as a string, which allows me to not worry about a 
     # non-integer breaking the program.  This also parses out floats, 
     # exponentials, expressions, and negatives.
-    seats_sold = str(input(f'\nPlease enter the number of seats sold for Section {section_name} from 0 to {seats_available}: '))
+
+    error_message = ''  # Prime the error message with a null value
+    seats_sold = ''  # Prime seats_sold with an invalid response
 
     while not seats_sold.isnumeric() or int(seats_sold) > seats_available:
-        print(f'{seats_sold} is either not a whole number or falls outside of expected range.')
+        print(error_message)
+
         seats_sold = str(input(f'Please enter the number of seats sold for Section {section_name} from 0 to {seats_available}: '))
-    
+        if seats_sold == SENTINEL:
+            print('\nTHANK YOU FOR USING STAGEMASTER!')  # If the entry is the SENTINAL, print a thank you message
+            print('WE LOOK FORWARD TO ASSISTING YOU IN THE FUTURE!\n')
+            raise SystemExit  # And exit the program.
+        else:
+            error_message = 'The value entered is either not a whole number or falls outside of expected range.'
+
     # Convert seats_sold from string to integer
     seats_sold = int(seats_sold)
 
